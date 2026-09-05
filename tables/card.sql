@@ -10,13 +10,13 @@ CREATE TABLE IF NOT EXISTS public.card (
 
     CONSTRAINT ck_card_element CHECK (
         (element)::text = ANY (ARRAY[
-            'TIERRA', 'AGUA', 'AIRE', 'ETER', 'VACIO', 'PLASMA',
-            'FUEGO', 'AZUFRE', 'CARNE', 'SANGRE', 'HONGOS', 'CARBONO'
+            'EARTH', 'WATER', 'AIR', 'ETHER', 'VOID', 'PLASMA',
+            'FIRE', 'SULFUR', 'FLESH', 'BLOOD', 'FUNGI', 'CARBON'
         ]::text[])
     ),
     CONSTRAINT ck_card_power_rank CHECK (
         (power_rank)::text = ANY (ARRAY[
-            'ENGENDRO', 'CAZADOR', 'ABOMINACION', 'ANCESTRAL_SUPREMO'
+            'SPAWN', 'HUNTER', 'ABOMINATION', 'SUPREME_ANCESTRAL'
         ]::text[])
     ),
     CONSTRAINT ck_card_atk_positive     CHECK (atk > 0),
