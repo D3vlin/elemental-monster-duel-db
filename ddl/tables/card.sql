@@ -8,17 +8,8 @@ CREATE TABLE IF NOT EXISTS public.card (
     seal       integer      NOT NULL,
     lore       varchar(300) NOT NULL,
 
-    CONSTRAINT ck_card_element CHECK (
-        (element)::text = ANY (ARRAY[
-            'EARTH', 'WATER', 'AIR', 'ETHER', 'VOID', 'PLASMA',
-            'FIRE', 'SULFUR', 'FLESH', 'BLOOD', 'FUNGI', 'CARBON'
-        ]::text[])
-    ),
-    CONSTRAINT ck_card_power_rank CHECK (
-        (power_rank)::text = ANY (ARRAY[
-            'SPAWN', 'HUNTER', 'ABOMINATION', 'SUPREME_ANCESTRAL'
-        ]::text[])
-    ),
+    CONSTRAINT fk_card_element FOREIGN KEY (element) REFERENCES public.element (code),
+    CONSTRAINT fk_card_power_rank FOREIGN KEY (power_rank) REFERENCES public.power_rank (code),
     CONSTRAINT ck_card_atk_positive     CHECK (atk > 0),
     CONSTRAINT ck_card_armor_positive   CHECK (armor > 0),
     CONSTRAINT ck_card_life_positive    CHECK (life > 0),
