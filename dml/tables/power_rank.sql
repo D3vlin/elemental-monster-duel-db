@@ -1,0 +1,3 @@
+INSERT INTO public.power_rank (code) VALUES
+    ('SPAWN'), ('HUNTER'), ('ABOMINATION'), ('SUPREME_ANCESTRAL')
+ON CONFLICT (code) DO NOTHING;
