@@ -57,7 +57,6 @@ CREATE TABLE IF NOT EXISTS public.card (
     armor      integer      NOT NULL,
     life       integer      NOT NULL,
     seal       integer      NOT NULL,
-    lore       varchar(300) NOT NULL,
 
     CONSTRAINT fk_card_element FOREIGN KEY (element) REFERENCES public.element (code),
     CONSTRAINT fk_card_power_rank FOREIGN KEY (power_rank) REFERENCES public.power_rank (code),
@@ -70,6 +69,19 @@ CREATE TABLE IF NOT EXISTS public.card (
 );
 
 ALTER TABLE public.card ENABLE ROW LEVEL SECURITY;
+
+-- ddl/tables/card_translation.sql
+CREATE TABLE IF NOT EXISTS public.card_translation (
+    card_id   bigint       NOT NULL,
+    locale_id bigint       NOT NULL,
+    lore      varchar(300) NOT NULL,
+
+    CONSTRAINT pk_card_translation PRIMARY KEY (card_id, locale_id),
+    CONSTRAINT fk_card_translation_card FOREIGN KEY (card_id) REFERENCES public.card (id),
+    CONSTRAINT fk_card_translation_locale FOREIGN KEY (locale_id) REFERENCES public.locale (id)
+);
+
+ALTER TABLE public.card_translation ENABLE ROW LEVEL SECURITY;
 
 -- ddl/tables/duel_result_counter.sql
 CREATE TABLE IF NOT EXISTS public.duel_result_counter (
