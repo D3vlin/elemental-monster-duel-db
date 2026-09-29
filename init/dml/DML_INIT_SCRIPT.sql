@@ -153,3 +153,27 @@ FROM (VALUES
 JOIN public.card c ON c.element = v.element AND c.power_rank = v.power_rank
 JOIN public.locale l ON l.code = v.locale
 ON CONFLICT (card_id, locale_id) DO UPDATE SET lore = EXCLUDED.lore;
+
+-- dml/tables/whats_new_entry.sql
+INSERT INTO public.whats_new_entry (slug, published_at) VALUES
+    ('launch',              '2026-09-25T00:00:00Z'),
+    ('theme-and-language',  '2026-09-27T00:00:00Z')
+ON CONFLICT (slug) DO UPDATE SET published_at = EXCLUDED.published_at;
+
+-- dml/tables/whats_new_entry_translation.sql
+INSERT INTO public.whats_new_entry_translation (whats_new_entry_id, locale_id, title, body)
+SELECT e.id, l.id, v.title, v.body
+FROM (VALUES
+    ('launch', 'es', '¡Bienvenido a Elemental Monster Duel!',
+        'Empieza la aventura. Este es el primer paso de un juego que va a seguir creciendo.'),
+    ('launch', 'en', 'Welcome to Elemental Monster Duel!',
+        'The adventure begins. This is the first step of a game that''s going to keep growing.'),
+
+    ('theme-and-language', 'es', 'Modo claro/oscuro y selector de idioma',
+        'Ahora podés cambiar entre modo claro y oscuro, y elegir entre español e inglés, desde cualquier pantalla.'),
+    ('theme-and-language', 'en', 'Dark/light mode and language switch',
+        'You can now switch between light and dark mode, and choose between Spanish and English, from any screen.')
+) AS v(slug, locale, title, body)
+JOIN public.whats_new_entry e ON e.slug = v.slug
+JOIN public.locale l ON l.code = v.locale
+ON CONFLICT (whats_new_entry_id, locale_id) DO UPDATE SET title = EXCLUDED.title, body = EXCLUDED.body;
