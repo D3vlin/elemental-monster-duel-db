@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS public.card (
     armor      integer      NOT NULL,
     life       integer      NOT NULL,
     seal       integer      NOT NULL,
-    lore       varchar(300) NOT NULL,
 
     CONSTRAINT fk_card_element FOREIGN KEY (element) REFERENCES public.element (code),
     CONSTRAINT fk_card_power_rank FOREIGN KEY (power_rank) REFERENCES public.power_rank (code),
