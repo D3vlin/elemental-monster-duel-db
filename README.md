@@ -2,62 +2,60 @@
 
 ## 📌 Overview
 
-**Elemental Monster Duel DB** es uno de los 6 repos de la arquitectura distribuida
-de Elemental Monster Duel. Contiene el esquema real de PostgreSQL — DDL, datos
-semilla y los scripts de inicialización, que el resto de los módulos consume.
+**Elemental Monster Duel DB** is one of 6 repositories in the distributed
+architecture of Elemental Monster Duel. It holds the real PostgreSQL schema —
+DDL, seed data, and the initialization scripts — that the other modules
+consume.
 
 ---
 
 ## 🎯 Purpose
 
-Este repo existe para:
+This repo exists to:
 
-- Ser la única fuente de verdad del esquema (tablas, constraints, RLS, policies)
-- Versionar la estructura (`ddl/`) separada de los datos semilla (`dml/`)
-- Automatizar la creación de una base nueva desde cero (`init/`), para desarrollo
-  local y para el Postgres de Docker
-- Garantizar, vía CI, que los scripts de init nunca se desincronicen de las
-  tablas fuente
+- Be the single source of truth for the schema (tables, constraints, RLS, policies)
+- Version the structure (`ddl/`) separately from the seed data (`dml/`)
+- Automate creating a new database from scratch (`init/`), for local
+  development and for the Docker Postgres
+- Guarantee, via CI, that the init scripts never drift from the source tables
 
 ---
 
 ## 🧱 Project Architecture Context
 
-Este repo es uno de 6 dentro del ecosistema Elemental Monster Duel, cada uno
-versionado y mantenido por separado:
+This repo is one of 6 in the Elemental Monster Duel ecosystem, each
+independently versioned and maintained:
 
-| Módulo | Responsabilidad | Repositorio |
+| Module | Responsibility | Repository |
 |---|---|---|
-| `db` | Esquema de base de datos | Este |
-| `entity` | Mapeo JPA | https://github.com/D3vlin/elemental-monster-duel-entity |
-| `dto` | Contratos de transporte | https://github.com/D3vlin/elemental-monster-duel-dto |
+| `db` | Database schema | This one |
+| `entity` | JPA mapping | https://github.com/D3vlin/elemental-monster-duel-entity |
+| `dto` | Data transport | https://github.com/D3vlin/elemental-monster-duel-dto |
 | `mapper` | Entity ↔ DTO | https://github.com/D3vlin/elemental-monster-duel-mapper |
-| `api` | Interfaz REST | https://github.com/D3vlin/elemental-monster-duel-api |
+| `api` | REST interface | https://github.com/D3vlin/elemental-monster-duel-api |
 | `ui` | Frontend | https://github.com/D3vlin/elemental-monster-duel-ui |
 
 ---
 
-## 🚀 ¿Por qué un módulo de DB dedicado?
+## 🚀 Why a Dedicated DB Module?
 
-- Un solo lugar de verdad para el esquema, en vez de que cada módulo Java
-  infiera su propia versión.
-- CI propio que verifica que `init/` nunca se desincronice de `ddl/`/`dml/`.
+- One single source of truth for the schema, instead of each Java module
+  inferring its own version.
+- Its own CI that verifies `init/` never drifts from `ddl/`/`dml/`.
 
 ---
 
-## Cómo está organizado
+## How it's organized
 
-- `ddl/tables/` — un archivo por tabla: estructura, constraints, FKs, RLS, policies.
-- `dml/tables/` — datos semilla por tabla.
-- `init/ddl/DDL_INIT_SCRIPT.sql` / `init/dml/DML_INIT_SCRIPT.sql` — generados
-  automáticamente desde `ddl/`/`dml/`, en el orden topológico que marcan las
-  propias `REFERENCES` de cada tabla, vía `ci/regenerate_init.sh`. **No se
-  editan a mano.**
+- `ddl/tables/` — one file per table: structure, constraints, FKs, RLS, policies.
+- `dml/tables/` — seed data per table.
+- `init/ddl/DDL_INIT_SCRIPT.sql` / `init/dml/DML_INIT_SCRIPT.sql` — generated
+  automatically from `ddl/`/`dml/`, in the topological order given by each
+  table's own `REFERENCES`, via `ci/regenerate_init.sh`. **Not edited by hand.**
 
-`init/` existe para automatizar la creación de una base nueva — corré primero
-el DDL y después el DML. `ci/verify_init_sync.sh` (`.github/workflows/ci.yml`)
-corre en cada PR para garantizar que no se desincronicen.
+`init/` exists to automate creating a new database — run the DDL first, then
+the DML.
 
-## Licencia
+## License
 
-Sin licencia — todos los derechos reservados.
+No license — all rights reserved.
