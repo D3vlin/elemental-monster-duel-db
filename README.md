@@ -28,7 +28,7 @@ independently versioned and maintained:
 
 | Module | Responsibility | Repository |
 |---|---|---|
-| `db` | Database schema | This one |
+| `db` | Database schema | — (this) |
 | `entity` | JPA mapping | https://github.com/D3vlin/elemental-monster-duel-entity |
 | `dto` | Data transport | https://github.com/D3vlin/elemental-monster-duel-dto |
 | `mapper` | Entity ↔ DTO | https://github.com/D3vlin/elemental-monster-duel-mapper |
